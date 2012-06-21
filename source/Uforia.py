@@ -94,11 +94,12 @@ class fileWorker(threading.Thread):
 					filelauncher = resulttest
 					filelauncher += " "
 					filelauncher += filepath
-					#print "filelauncher: ", filelauncher
-				os.system(filelauncher)
+					os.system(filelauncher)
 			except:
 				pass
 
+if __name__ == "__main__":
+				
 fileQueue = Queue.Queue()
 
 print "\n","Starting in directory:", startScan

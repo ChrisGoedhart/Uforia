@@ -4,8 +4,6 @@ modtop = top=os.getcwd()
 modtop +="/modules"
 moddir = []
 modname = []
-#externalresult = "plaintext" """
-
 
 def findmods(modtop):
 	for root, dirs, files in os.walk(modtop, topdown=False):

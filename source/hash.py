@@ -23,7 +23,3 @@ def filetosha256(filepath):
 		for chunk in iter(lambda: f.read(8192), b''): 
 			sha256.update(chunk)
 	return sha256.hexdigest() 
-	
-if __name__ == "__main__":
-	#filepath = '/home/carlo/test/hashbatch/aap.txt'
-	print filetomd5(filepath)
