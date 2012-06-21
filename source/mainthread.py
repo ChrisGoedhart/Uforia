@@ -13,7 +13,7 @@ from Uforia.models import * #import Hash model
 fileList = []
 rootDir = sys.argv[0]
 top = os.getcwd()
-start = '/'
+start = '/home/chris/openbaar/TESTBESTANDEN'
 nameThread = threading.currentThread().getName()
 
 class Scanner(threading.Thread):
@@ -39,22 +39,26 @@ class Hasher(threading.Thread):
 			self.queue = queue
 		
 	def run(self):
-		nextFile = self.queue.get()
-		while nextFile:
+		#fileCount = self.queue.qsize()
+		#nextFile = self.queue.get()
+		while self.queue.qsize():
 			try:	
+				nextFile = self.queue.get()
 				print "\n","\n","Trying " + nextFile
 				self.scanFile(nextFile)
-				nextFile = self.queue.get()
+				#nextFile = self.queue.get()
 				self.queue.task_done()
 				print "\n","Hashing of this file successfull"
+				print "\n", "Queue items left: ", self.queue.qsize()
 			except:
-				print "Failed to scan file:", "/n",sys.exc_info()[0]
-				nextFile = self.queue.get()
+				print "Failed to scan file:", "\n",sys.exc_info()[0]
+				#nextFile = self.queue.get()
 				self.queue.task_done()
 				pass
+					
 			
-	def scanFile(self, name):
-			filepath = self.queue.get()
+	def scanFile(self, nextFile):
+			filepath = nextFile
 			ftype = magic.from_file(filepath)
 			mtype = magic.from_file(filepath, mime=True)
 			btype = magic.from_buffer(open(filepath).read(1024))
@@ -74,6 +78,7 @@ class Hasher(threading.Thread):
 			c = Metadata(Location = filepath, Name = os.path.basename(filepath), MTimes = mtime(filepath), ATimes = atime(filepath), CTimes = ctime(filepath), Owner = owner(filepath), Groups = group(filepath), Permissions = '?')
 			c.save()
 			print "\n","Metadata exported to database"
+			#print "\n", "Queue items left: ", self.queue.qsize()
 
 fileQueue = Queue.Queue()
 
